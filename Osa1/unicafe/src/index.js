@@ -12,29 +12,74 @@ class App extends React.Component {
         kaikkiaan:0
       }
     }
-    
-    render(){
-         
+    klikHyva = () =>{
+        this.setState({
+          hyva: this.state.hyva +1,
+          keskiarvo: this.state.keskiarvo +1, 
+          kaikkiaan: this.state.kaikkiaan +1
+        })
+    }
+    klikNeutraali = () =>{
+        this.setState({
+          neutraali: this.state.neutraali +1,
+          kaikkiaan: this.state.kaikkiaan +1
+        })
+    }
+
+    klikHuono = () =>{
+        this.setState({
+          huono: this.state.huono +1,
+          keskiarvo: this.state.keskiarvo -1,
+          kaikkiaan: this.state.kaikkiaan +1
+        })
+    }
+
+    render(){         
       return (
         <div>
           <h1>Anna palautetta</h1>
-          <button onClick={() => this.setState({hyva: this.state.hyva +1, keskiarvo: this.state.keskiarvo +1, kaikkiaan: this.state.kaikkiaan +1})}>
-            Hyvä
-          </button>
-          <button onClick={() => this.setState({neutraali: this.state.neutraali +1, kaikkiaan: this.state.kaikkiaan +1})}>
-            Neutraali
-          </button>
-          <button onClick={() => this.setState({huono: this.state.huono +1, keskiarvo: this.state.keskiarvo -1, kaikkiaan: this.state.kaikkiaan +1})}>
-            Huono
-          </button>
-          <h2>Statistiikkaa</h2> 
-          <p>Hyvä:{this.state.hyva}</p>
-          <p>Neutraali:{this.state.neutraali}</p>
-          <p>Huono:{this.state.huono}</p>
-          <p>Keskiarvo:{this.state.keskiarvo/this.state.kaikkiaan}</p>
-          <p>Positiivisia:{100*this.state.hyva/this.state.kaikkiaan}%</p>
+          <Button text="Hyvä" metodi={this.klikHyva} />
+          <Button text="Neutraali" metodi={this.klikNeutraali} />
+          <Button text="Huono" metodi={this.klikHuono} />
+          <Statistics state ={this.state} />
         </div>
         )
+  }
+}
+
+const Button = (props) =>{
+  return (
+    <button onClick={props.metodi}>
+      {props.text}
+    </button>
+  )
+}
+
+const Statistics = (props) =>{
+  return (
+    <div>
+      <h2>Statistiikkaa</h2> 
+      <Statistic text= "Hyvä: " value={props.state.hyva}/>
+      <Statistic text= "Neutraali: " value={props.state.neutraali}/>
+      <Statistic text= "Huono: " value={props.state.huono}/>
+      <Statistic text= "Keskiarvo: " value={props.state.keskiarvo/props.state.kaikkiaan}/>
+      <Statistic text= "Positiivisia: " value={100*props.state.hyva/props.state.kaikkiaan}/>
+    </div>
+  )
+}
+const Statistic = (props) =>{
+  if(props.text === "Positiivisia: "){
+    return (
+     <div>
+       <p>{props.text}{props.value} %</p>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <p>{props.text}{props.value}</p>
+      </div>
+    )
   }
 }
 
