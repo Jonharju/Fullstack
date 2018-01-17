@@ -56,6 +56,14 @@ const Button = (props) =>{
 }
 
 const Statistics = (props) =>{
+  if(props.state.hyva === 0 && props.state.neutraali === 0 && props.state.huono === 0){
+    return(
+        <div>
+          <h2>Statistiikkaa</h2> 
+          <p>Yhtään palautetta ei ole annettu</p>
+        </div>
+    )
+  }
   return (
     <div>
       <h2>Statistiikkaa</h2> 
