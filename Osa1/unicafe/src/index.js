@@ -12,6 +12,18 @@ class App extends React.Component {
         kaikkiaan:0
       }
     }
+    klik = (kutsuja) =>{
+        if(kutsuja === "Hyvä"){
+            this.klikHyva()
+        } else if(kutsuja === "Neutraali"){
+            this.klikNeutraali()
+        } else if(kutsuja === "Huono"){
+            this.klikHuono()
+        } else {
+
+        }
+    }
+
     klikHyva = () =>{
         this.setState({
           hyva: this.state.hyva +1,
@@ -38,9 +50,18 @@ class App extends React.Component {
       return (
         <div>
           <h1>Anna palautetta</h1>
-          <Button text="Hyvä" metodi={this.klikHyva} />
-          <Button text="Neutraali" metodi={this.klikNeutraali} />
-          <Button text="Huono" metodi={this.klikHuono} />
+          <Button 
+            text="Hyvä" 
+            metodi={() => this.klik("Hyvä")}
+          />
+          <Button 
+            text="Neutraali" 
+            metodi={() => this.klik("Neutraali")} 
+          />
+          <Button 
+            text="Huono" 
+            metodi={() => this.klik("Huono")} 
+          />
           <Statistics state ={this.state} />
         </div>
         )
@@ -78,8 +99,8 @@ const Statistics = (props) =>{
 const Statistic = (props) =>{
   if(props.text === "Positiivisia: "){
     return (
-     <div>
-       <p>{props.text}{props.value} %</p>
+      <div>
+        <p>{props.text}{props.value} %</p>
       </div>
     )
   } else {
