@@ -6,9 +6,12 @@ class App extends React.Component {
     super(props)
     this.state = {
       selected: 0,
-      votes:[0,0,0,0,0,0]
+      votes:[0,0,0,0,0,0],
+      mostVoted:0,
+      maxVotes:0
     }
   }
+  
   next = () => {
     var next = this.state.selected  
     while (next === this.state.selected) {
@@ -22,9 +25,15 @@ class App extends React.Component {
   vote = (index) => {
     var newVotes = this.state.votes
     newVotes[index] = newVotes[index] + 1
+    if(newVotes[index] > this.state.maxVotes){
+      this.setState({ 
+        mostVoted: index,
+        maxVotes: newVotes[index]
+      })
+    }
     this.setState({ 
         votes: newVotes
-      })
+    })
   }
 
   render() {
@@ -38,6 +47,9 @@ class App extends React.Component {
         <button onClick = {this.next}>
           Next anecdote
         </button>
+        <h2>Anecdote with most votes:</h2>
+        <p>{this.props.anecdotes[this.state.mostVoted]}</p>
+        <p>Has {this.state.votes[this.state.mostVoted]} votes</p>
       </div>
     )
   }
