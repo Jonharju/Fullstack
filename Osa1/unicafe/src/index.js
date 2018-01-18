@@ -88,26 +88,32 @@ const Statistics = (props) =>{
   return (
     <div>
       <h2>Statistiikkaa</h2> 
-      <Statistic text= "Hyvä: " value={props.state.hyva}/>
-      <Statistic text= "Neutraali: " value={props.state.neutraali}/>
-      <Statistic text= "Huono: " value={props.state.huono}/>
-      <Statistic text= "Keskiarvo: " value={props.state.keskiarvo/props.state.kaikkiaan}/>
-      <Statistic text= "Positiivisia: " value={100*props.state.hyva/props.state.kaikkiaan}/>
+      <table>
+        <tbody>
+          <Statistic text= "Hyvä: " value={props.state.hyva}/>
+          <Statistic text= "Neutraali: " value={props.state.neutraali}/>
+          <Statistic text= "Huono: " value={props.state.huono}/>
+          <Statistic text= "Keskiarvo: " value={props.state.keskiarvo/props.state.kaikkiaan}/>
+          <Statistic text= "Positiivisia: " value={100*props.state.hyva/props.state.kaikkiaan}/>
+        </tbody>
+      </table>    
     </div>
   )
 }
 const Statistic = (props) =>{
   if(props.text === "Positiivisia: "){
     return (
-      <div>
-        <p>{props.text}{props.value} %</p>
-      </div>
+      <tr>  
+        <td>{props.text} </td>
+        <td>{props.value} %</td>
+      </tr>
     )
   } else {
     return (
-      <div>
-        <p>{props.text}{props.value}</p>
-      </div>
+      <tr>
+        <td>{props.text} </td>
+        <td>{props.value}</td>
+      </tr>
     )
   }
 }
