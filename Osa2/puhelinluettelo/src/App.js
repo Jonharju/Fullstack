@@ -15,8 +15,12 @@ class App extends React.Component {
     const nameObject = {
       name: this.state.newName
     }
+    var persons = this.state.persons
+    const names = this.state.persons.map(person => person.name)
+    if(!names.includes(nameObject.name)){
+      persons = persons.concat(nameObject)
+    }
 
-    const persons = this.state.persons.concat(nameObject)
     this.setState({
       persons: persons,
       newName: ''
