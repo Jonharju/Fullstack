@@ -42,7 +42,21 @@ class App extends React.Component {
             newNumber:''
           })
         }) 
-    } 
+    } else{
+      if (window.confirm(contactObject.name+" on jo luettelossa, korvataanko vanha numero uudella?")) {
+        const person = this.state.persons.find(p => p.name === contactObject.name)
+        const newPerson = {...person, number: contactObject.number}
+        contactService
+          .update(person.id,newPerson)
+          .then(response => {
+            this.setState({
+              persons: this.state.persons.map(p => p.id !== person.id ? p : newPerson),
+              newName: '',
+              newNumber:''
+            })
+          })
+      }
+    }
   }
 
   removeContact = (person) => {
@@ -82,7 +96,7 @@ class App extends React.Component {
           <Input text = {'Nimi:'} value={this.state.newName} method={this.handleNameChange} />
           <Input text = {'Numero:'} value={this.state.newNumber} method={this.handleNumberChange} />
           <div>
-            <button type="submit">lisää</button>
+            <button type="submit">Lisää</button>
           </div>
         </form>
       <Numbers persons = {this.state.persons} contactsToShow = {contactsToShow} method = {this.removeContact} />
