@@ -11,7 +11,8 @@ class App extends React.Component {
         { name: 'Lea Kutvonen', number: '040-123456' }
       ],
       newName: '',
-      newNumber: ''
+      newNumber: '',
+      filter: ''
     }
   }
   addContact = (event) => {
@@ -41,16 +42,25 @@ class App extends React.Component {
     this.setState({ newNumber: event.target.value })
   }
 
+  handleFilterChange = (event) => {
+    this.setState({ filter: event.target.value })
+  }
+
   render() {
+    const contactsToShow = this.state.persons.filter(person => person.name.toLocaleLowerCase().includes(this.state.filter.toLocaleLowerCase()))
     return (
       <div>
-        <h2>Puhelinluettelo</h2>
+        <h1>Puhelinluettelo</h1>
+        <div>
+          Rajaa näytettäviä <input value = {this.state.filter} onChange={this.handleFilterChange}/>
+        </div>  
+        <h2>Lisää uusi</h2>
         <form onSubmit={this.addContact}>
           <div>
-            nimi: <input value={this.state.newName} onChange={this.handleNameChange} />
+            Nimi: <input value={this.state.newName} onChange={this.handleNameChange} />
           </div>
           <div>
-            numero: <input value={this.state.newNumber} onChange={this.handleNumberChange} />
+            Numero: <input value={this.state.newNumber} onChange={this.handleNumberChange} />
           </div>
           <div>
             <button type="submit">lisää</button>
@@ -60,7 +70,7 @@ class App extends React.Component {
         <h2>Numerot</h2>
         <table>
           <tbody>
-            {this.state.persons.map(person => 
+            {contactsToShow.map(person => 
               <tr key = {person.name}>
                 <td>{person.name}</td>
                 <td>{person.number}</td>
