@@ -1,7 +1,7 @@
 import React from 'react';
 import Numbers from './components/Numbers';
 import Input from './components/Input';
-import axios from 'axios'
+import contactService from './services/contacts'
 
 class App extends React.Component {
   constructor(props) {
@@ -16,8 +16,8 @@ class App extends React.Component {
   }
   componentWillMount() {
     console.log('will mount')
-    axios
-      .get('http://localhost:3001/persons')
+    contactService
+      .getAll()
       .then(response => {
         console.log('promise fulfilled')
         this.setState({ persons: response.data })
@@ -33,17 +33,16 @@ class App extends React.Component {
     var persons = this.state.persons
     const names = this.state.persons.map(person => person.name)
     if(!names.includes(contactObject.name)){
-      persons = persons.concat(contactObject)
-    }
-    axios
-    .post('http://localhost:3001/persons', contactObject)
-    .then(response => {
-      this.setState({
-        persons: persons,
-        newName: '',
-        newNumber:''
-      })
-    })  
+      contactService
+        .create(contactObject)
+        .then(response => {
+          this.setState({
+            persons: persons.concat(response.data),
+            newName: '',
+            newNumber:''
+          })
+        }) 
+    } 
   }
 
   handleNameChange = (event) => {
