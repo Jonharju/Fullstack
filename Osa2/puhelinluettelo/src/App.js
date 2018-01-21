@@ -1,22 +1,29 @@
 import React from 'react';
 import Numbers from './components/Numbers';
 import Input from './components/Input';
+import axios from 'axios'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      persons: [
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Martti Tienari', number: '040-123456' },
-        { name: 'Arto Järvinen', number: '040-123456' },
-        { name: 'Lea Kutvonen', number: '040-123456' }
-      ],
+      persons: [],
       newName: '',
       newNumber: '',
       filter: ''
     }
+    console.log('constructor')
   }
+  componentWillMount() {
+    console.log('will mount')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        this.setState({ persons: response.data })
+      })
+  }
+
   addContact = (event) => {
     event.preventDefault()
     const contactObject = {
@@ -49,6 +56,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('render')
     const contactsToShow = this.state.persons.filter(person => person.name.toLocaleLowerCase().includes(this.state.filter.toLocaleLowerCase()))
     return (
       <div>
