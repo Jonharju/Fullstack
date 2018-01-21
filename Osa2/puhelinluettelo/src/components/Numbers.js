@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Numbers = ({persons, contactsToShow}) => {
+const Numbers = ({persons, contactsToShow, method}) => {
   return(
       <div>
         <h2>Numerot</h2>
@@ -10,6 +10,7 @@ const Numbers = ({persons, contactsToShow}) => {
                 <tr key = {person.name}>
                   <td>{person.name}</td>
                   <td>{person.number}</td>
+                  <td><button onClick = {() => method(person)}>Poista</button></td>
                 </tr>
                 )}
             </tbody>

@@ -45,6 +45,19 @@ class App extends React.Component {
     } 
   }
 
+  removeContact = (person) => {
+    if (window.confirm("Poistetaanko "+person.name+" ?")) {
+      contactService
+        .remove(person.id)
+        .then(response => {
+          const persons = this.state.persons.filter(p => p.id !== person.id)
+          this.setState({
+            persons: persons
+          })
+        })
+    }
+  }
+
   handleNameChange = (event) => {
     this.setState({ newName: event.target.value })
   }
@@ -72,7 +85,7 @@ class App extends React.Component {
             <button type="submit">lisää</button>
           </div>
         </form>
-      <Numbers persons = {this.state.persons} contactsToShow = {contactsToShow}/>
+      <Numbers persons = {this.state.persons} contactsToShow = {contactsToShow} method = {this.removeContact} />
     </div>
     )
   }
