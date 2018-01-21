@@ -1,4 +1,6 @@
 import React from 'react';
+import Numbers from './components/Numbers';
+import Input from './components/Input';
 
 class App extends React.Component {
   constructor(props) {
@@ -51,34 +53,16 @@ class App extends React.Component {
     return (
       <div>
         <h1>Puhelinluettelo</h1>
-        <div>
-          Rajaa näytettäviä <input value = {this.state.filter} onChange={this.handleFilterChange}/>
-        </div>  
+        <Input text = {'Rajaa näytettäviä'} value = {this.state.filter} method={this.handleFilterChange} />  
         <h2>Lisää uusi</h2>
         <form onSubmit={this.addContact}>
-          <div>
-            Nimi: <input value={this.state.newName} onChange={this.handleNameChange} />
-          </div>
-          <div>
-            Numero: <input value={this.state.newNumber} onChange={this.handleNumberChange} />
-          </div>
+          <Input text = {'Nimi:'} value={this.state.newName} method={this.handleNameChange} />
+          <Input text = {'Numero:'} value={this.state.newNumber} method={this.handleNumberChange} />
           <div>
             <button type="submit">lisää</button>
           </div>
         </form>
-      <div>
-        <h2>Numerot</h2>
-        <table>
-          <tbody>
-            {contactsToShow.map(person => 
-              <tr key = {person.name}>
-                <td>{person.name}</td>
-                <td>{person.number}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <Numbers persons = {this.state.persons} contactsToShow = {contactsToShow}/>
     </div>
     )
   }
