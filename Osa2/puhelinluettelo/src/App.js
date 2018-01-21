@@ -35,12 +35,15 @@ class App extends React.Component {
     if(!names.includes(contactObject.name)){
       persons = persons.concat(contactObject)
     }
-
-    this.setState({
-      persons: persons,
-      newName: '',
-      newNumber:''
-    })
+    axios
+    .post('http://localhost:3001/persons', contactObject)
+    .then(response => {
+      this.setState({
+        persons: persons,
+        newName: '',
+        newNumber:''
+      })
+    })  
   }
 
   handleNameChange = (event) => {
