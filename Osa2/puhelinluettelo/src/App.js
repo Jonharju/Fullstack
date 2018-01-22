@@ -10,7 +10,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumber: '',
-      filter: ''
+      filter: '',
+      message: null
     }
     console.log('constructor')
   }
@@ -39,8 +40,12 @@ class App extends React.Component {
           this.setState({
             persons: persons.concat(response.data),
             newName: '',
-            newNumber:''
+            newNumber:'',
+            message: contactObject.name+' lisätty'
           })
+          setTimeout(() => {
+            this.setState({message: null})
+          }, 3000)
         }) 
     } else{
       if (window.confirm(contactObject.name+" on jo luettelossa, korvataanko vanha numero uudella?")) {
@@ -52,8 +57,12 @@ class App extends React.Component {
             this.setState({
               persons: this.state.persons.map(p => p.id !== person.id ? p : newPerson),
               newName: '',
-              newNumber:''
+              newNumber:'',
+              message: newPerson.name+' numero muutettu'
             })
+            setTimeout(() => {
+              this.setState({message: null})
+            }, 3000)
           })
       }
     }
@@ -66,8 +75,12 @@ class App extends React.Component {
         .then(response => {
           const persons = this.state.persons.filter(p => p.id !== person.id)
           this.setState({
-            persons: persons
+            persons: persons,
+            message: person.name+' poistettu'
           })
+          setTimeout(() => {
+            this.setState({message: null})
+          }, 3000)
         })
     }
   }
@@ -90,6 +103,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Puhelinluettelo</h1>
+        <Notification message={this.state.message} />
         <Input text = {'Rajaa näytettäviä'} value = {this.state.filter} method={this.handleFilterChange} />  
         <h2>Lisää uusi</h2>
         <form onSubmit={this.addContact}>
@@ -103,6 +117,16 @@ class App extends React.Component {
     </div>
     )
   }
+}
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+  return (
+    <div className="notification">
+      {message}
+    </div>
+  )
 }
 
 export default App
