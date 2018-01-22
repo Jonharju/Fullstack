@@ -21,13 +21,16 @@ class App extends React.Component {
   handleStringChange = (event) => {
     this.setState({ string: event.target.value })
   }
+  setString = newString => () => {
+    this.setState({ string: newString })
+  }
 
   render() {
     const countriesToShow = this.state.countries.filter(country => country.name.toLocaleLowerCase().includes(this.state.string.toLocaleLowerCase()))
     return (
       <div>
         Find countries: <input value = {this.state.string} onChange={this.handleStringChange} />
-        <Results list = {countriesToShow} />
+        <Results list = {countriesToShow} method = {this.setString}/>
       </div> 
     );
   }
@@ -45,7 +48,7 @@ const Results = (props) => {
       </div>
     )
   } else if (props.list.length > 1){
-    const rivit = () => props.list.map(country => <li key = {country.name}>{country.name}</li>)
+    const rivit = () => props.list.map(country => <li key = {country.name} onClick = {props.method(country.name)}>{country.name}</li>)
     return(
       <div>
         <ul>
