@@ -64,6 +64,21 @@ class App extends React.Component {
               this.setState({message: null})
             }, 3000)
           })
+          .catch(error => {
+            contactService
+              .create(newPerson)
+              .then(response => {
+                this.setState({
+                  persons: this.state.persons.map(p => p.id !== person.id ? p : newPerson),
+                  newName: '',
+                  newNumber:'',
+                  message: newPerson.name+' numero muutettu'
+                })
+                setTimeout(() => {
+                  this.setState({message: null})
+                }, 3000)
+              })
+          })
       }
     }
   }
