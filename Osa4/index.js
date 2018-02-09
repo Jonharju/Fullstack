@@ -5,17 +5,28 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const blogsRouter = require("./controllers/blogs")
+const config = require('./utils/config')
+
+
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/api/blogs', blogsRouter)
 
-const mongoUrl = 'mongodb://fullstack:sekred@ds129428.mlab.com:29428/blogilista'
-mongoose.connect(mongoUrl)
+mongoose.connect(config.mongoUrl)
 mongoose.Promise = global.Promise
 
+const server = http.createServer(app)
 
-const PORT = 3003
-app.listen(PORT, () => {
+const PORT = config.port
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+server.on('close', () => {
+  mongoose.connection.close()
+})
+
+module.exports = {
+  app, server
+}
