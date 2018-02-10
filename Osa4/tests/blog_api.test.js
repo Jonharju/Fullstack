@@ -71,7 +71,29 @@ describe('post new', () => {
       
         expect(response.body.length).toBe(initialBlogs.length + 1)
         expect(contents).toContain('DBs are easy')
-      })
+    })
+    test('if added blog has no value for likes, it should be 0  ', async () => {
+        const newBlog = {
+            title: 'No one likes this',
+            author: 'Lonely Boy',
+            url: 'www.lonely4ever.com'
+        }
+        await api
+          .post('/api/blogs')
+          .send(newBlog)
+          .expect(200)
+          .expect('Content-Type', /application\/json/)
+      
+        const response = await api
+          .get('/api/blogs')
+      
+        const titles = response.body.map(r => r.title)
+        const added = response.body.filter(r => r.title === 'No one likes this')
+        expect(response.body.length).toBe(initialBlogs.length + 2)
+        expect(titles).toContain('No one likes this')
+        console.log(added)
+        expect(added[0].likes).toBe(0)
+    })
 })
 
 afterAll(() => {
