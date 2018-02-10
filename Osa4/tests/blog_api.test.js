@@ -91,8 +91,25 @@ describe('post new', () => {
         const added = response.body.filter(r => r.title === 'No one likes this')
         expect(response.body.length).toBe(initialBlogs.length + 2)
         expect(titles).toContain('No one likes this')
-        console.log(added)
         expect(added[0].likes).toBe(0)
+    })
+    test('if added blog has no value for title or url, it wont be added  ', async () => {
+        const newBlog = {
+            author: 'Freddy Failer'
+        }
+
+        await api
+          .post('/api/blogs')
+          .send(newBlog)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+      
+        const response = await api
+          .get('/api/blogs')
+      
+        const authors = response.body.map(r => r.author)
+        expect(response.body.length).toBe(initialBlogs.length + 2)
+        expect(authors).not.toContain('Freddy Failer')
     })
 })
 
