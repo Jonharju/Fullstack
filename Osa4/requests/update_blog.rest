@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/5a80522fdee9b61f50499b50
+content-type: application/json
+
+{
+  "title": "Blogi update",
+  "author": "Jaska Joku",
+  "url": "www.blogi.com/jatkuu",
+  "likes": 4
+}
