@@ -2,7 +2,8 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const { initialBlogs, blogsInDb } = require('./test_helper')
+const User = require('../models/user')
+const { initialBlogs, blogsInDb, usersInDb } = require('./test_helper')
 
 beforeAll(async () => {
     await Blog.remove({})
@@ -91,6 +92,97 @@ describe('post new', () => {
     })
 })
 
+describe('when there is initially one user at db', async () => {
+    beforeAll(async () => {
+      await User.remove({})
+      const user = new User({ username: 'root', password: 'sekret' })
+      await user.save()
+    })
+  
+    test('creating new user succeeds', async () => {
+      const usersBeforeOperation = await usersInDb()
+  
+      const newUser = {
+        username: 'mluukkai',
+        name: 'Matti Luukkainen',
+        password: 'salainen'
+      }
+  
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+  
+      const usersAfterOperation = await usersInDb()
+      expect(usersAfterOperation.length).toBe(usersBeforeOperation.length+1)
+      const usernames = usersAfterOperation.map(u=>u.username)
+      expect(usernames).toContain(newUser.username)
+    })
+
+    test('creating user fails when username already taken', async () => {
+        const usersBeforeOperation = await usersInDb()
+      
+        const newUser = {
+          username: 'root',
+          name: 'Superuser',
+          password: 'salainen'
+        }
+      
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+      
+        expect(result.body).toEqual({ error: 'username must be unique'})
+      
+        const usersAfterOperation = await usersInDb()
+        expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
+      })
+
+      test('creating user fails when password is too short', async () => {
+        const usersBeforeOperation = await usersInDb()
+      
+        const newUser = {
+          username: 'sala1nen',
+          name: 'Superuser',
+          password: 's'
+        }
+      
+        const result = await api
+          .post('/api/users')
+          .send(newUser)
+          .expect(400)
+          .expect('Content-Type', /application\/json/)
+      
+        expect(result.body).toEqual({ error: 'password too short'})
+      
+        const usersAfterOperation = await usersInDb()
+        expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
+      })
+
+      test('if user does not specify adult, it is set as true', async () => {
+        const usersBeforeOperation = await usersInDb()
+      
+        const newUser = {
+          username: 'sala1nen',
+          name: 'Superuser',
+          password: 'salainen'
+        }
+      
+        await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+  
+        const usersAfterOperation = await usersInDb()
+        expect(usersAfterOperation.length).toBe(usersBeforeOperation.length+1)
+        const user = usersAfterOperation.filter(u=>u.username === newUser.username)
+        expect(user[0].adult).toBe(true)
+      })
+  })
 afterAll(() => {
     server.close()
 })
