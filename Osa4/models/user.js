@@ -5,7 +5,7 @@ const User = mongoose.model('User', {
   name: String,
   passwordHash: String,
   adult: Boolean,
-  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+  blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
 })
 
 module.exports = User
