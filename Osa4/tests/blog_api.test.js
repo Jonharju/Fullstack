@@ -3,6 +3,7 @@ const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 const { initialBlogs, blogsInDb, usersInDb } = require('./test_helper')
 
 beforeAll(async () => {
@@ -39,7 +40,7 @@ describe('post new', () => {
             url: 'www.db.com/dbrec',
             likes: 3
         }
-      
+        
         await api
           .post('/api/blogs')
           .send(newBlog)
