@@ -29,7 +29,8 @@ class App extends React.Component {
         username: this.state.username,
         password: this.state.password
       })
-  
+      
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       this.setState({ username: '', password: '', user})
     } catch(exception) {
       this.setState({
@@ -40,19 +41,30 @@ class App extends React.Component {
       }, 5000)
     }
   }
+ 
+  logout = () => {
+    this.setState({user: null})
+    window.localStorage.removeItem('loggedBlogappUser')
+  }
 
   componentDidMount() {
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
     )
+
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({user})
+    }
   } 
 
   render() {
-    if (this.state.user === null) {
-      return (
-        <div>
-          <h2>Kirjaudu sovellukseen</h2>
-          <form onSubmit={this.login}>
+    const loginForm = () => (
+      <div>
+        <h2>Kirjaudu</h2>
+    
+        <form onSubmit={this.login}>
           <div>
             käyttäjätunnus
             <input
@@ -73,17 +85,27 @@ class App extends React.Component {
           </div>
           <button type="submit">kirjaudu</button>
         </form>
-        </div>
-      )
-    }
-  
+      </div>
+    )
+
     return (
       <div>
-        <h2>blogs</h2>
-        <p>{this.state.user.name} logged in</p>
-        {this.state.blogs.map(blog =>
-          <Blog key={blog._id} blog={blog} />
-        )}
+        <div>
+          <h1>Blogs</h1>
+        </div>
+        {this.state.user === null ?
+          loginForm() :
+          <div>
+            <div>
+              <p>{this.state.user.name} logged in 
+                <button onClick= {this.logout}>Logout</button>
+              </p>              
+            </div>
+            {this.state.blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} />
+            )}
+          </div>
+        }
       </div>
     )
   }
