@@ -1,5 +1,6 @@
 import React from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 class App extends React.Component {
@@ -44,6 +45,7 @@ class App extends React.Component {
         author: this.state.author,
         url: this.state.url
       })
+      blog.id = blog._id
       const newList = this.state.blogs.concat(blog)
       this.setState({
         title: '',
@@ -170,6 +172,7 @@ class App extends React.Component {
     return (
       <div>
         <div>
+          <Notification error={this.state.error} message={this.state.message} />
           <h1>Blogs</h1>
         </div>
         {this.state.user === null ?
