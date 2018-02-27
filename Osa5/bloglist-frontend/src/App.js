@@ -154,7 +154,7 @@ class App extends React.Component {
             <Togglable buttonLabel="Create" ref={component => this.blogForm = component}>
               <BlogForm onSubmit={this.addBlog} handleChange={this.handleBlogFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
             </Togglable>
-            {this.state.blogs.map(blog =>
+            {this.state.blogs.sort((a, b) => b.likes - a.likes).map(blog =>
               <Blog key={blog.id} blog={blog} />
             )}
           </div>
