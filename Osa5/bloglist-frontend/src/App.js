@@ -1,6 +1,8 @@
 import React from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 class App extends React.Component {
@@ -39,6 +41,7 @@ class App extends React.Component {
 
   addBlog = async (event) => {
     event.preventDefault()
+    this.blogForm.toggleVisibility()
     try{
       const blog = await blogService.create({
         title: this.state.title,
@@ -132,42 +135,7 @@ class App extends React.Component {
           <button type="submit">kirjaudu</button>
         </form>
       </div>
-    )
-
-    const blogForm = () => (
-      <div>
-        <h2>Create new blog</h2>
-        <form onSubmit={this.addBlog}>
-          <div>
-            title
-            <input
-              type="title"
-              name="title"
-              value={this.state.title}
-              onChange={this.handleBlogFieldChange}
-            />
-          </div> 
-          <div> 
-            author
-            <input
-              type="author"
-              name="author"
-              value={this.state.author}
-              onChange={this.handleBlogFieldChange}
-            />
-          </div>
-          <div>
-            url  
-            <input
-              name="url"
-              value={this.state.url}
-              onChange={this.handleBlogFieldChange}
-            />
-          </div>
-          <button type="submit">create</button>
-        </form>
-      </div>
-    )
+    )    
 
     return (
       <div>
@@ -183,7 +151,9 @@ class App extends React.Component {
                 <button onClick= {this.logout}>Logout</button>
               </p>              
             </div>
-            {blogForm()}
+            <Togglable buttonLabel="Create" ref={component => this.blogForm = component}>
+              <BlogForm onSubmit={this.addBlog} handleChange={this.handleBlogFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
+            </Togglable>
             {this.state.blogs.map(blog =>
               <Blog key={blog.id} blog={blog} />
             )}
