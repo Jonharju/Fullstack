@@ -49,7 +49,7 @@ class App extends React.Component {
         url: this.state.url
       })
       blog.id = blog._id
-      const newList = this.state.blogs.concat(blog)
+      const newList = await blogService.getAll()
       this.setState({
         title: '',
         author:'',
@@ -67,6 +67,35 @@ class App extends React.Component {
       setTimeout(() => {
         this.setState({ error: null })
       }, 5000)
+    }
+  }
+
+  likeBlog = async (blog) => {
+    console.log(blog)
+    var updatedBlog = blog
+    updatedBlog.likes = !blog.likes ? 1 : blog.likes +1
+    const blogObject = {
+      id: blog.id,
+      user: blog.user._id,
+      likes: blog.likes,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    }
+    const updated = await blogService.update(blogObject.id,blogObject)
+    this.setState({
+      blogs: this.state.blogs.map((blog) => blog.id === updated.id ? updated : blog)
+    })
+  }
+
+  deleteBlog = async (blog) => {
+    if (window.confirm("Halautko varmasti poistaa blogin?")) {
+      if (blog.user.username === this.state.user.username) {
+        await blogService.remove(blog.id)
+        this.setState({
+          blogs: this.state.blogs.filter(b => b.id !== blog.id)
+        })
+      } 
     }
   }
 
@@ -155,7 +184,7 @@ class App extends React.Component {
               <BlogForm onSubmit={this.addBlog} handleChange={this.handleBlogFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
             </Togglable>
             {this.state.blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} delete={this.deleteBlog} update={this.likeBlog}/>
             )}
           </div>
         }
