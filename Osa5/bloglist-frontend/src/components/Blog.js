@@ -4,7 +4,6 @@ import React from 'react'
 class Blog extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props.blog)
     this.state = {
       visible: false,
       blog: props.blog,
@@ -27,18 +26,20 @@ class Blog extends React.Component {
   }
 
   render() {
+    const deleteButtonVisible = {display: this.state.user == null || this.state.user.username === this.state.blog.user.username ? '' : 'none'}
+
     if (this.state.visible) {
       const likes = !this.state.blog.likes ? 0 : this.state.blog.likes
       return (
         <div onClick={this.handleClick} style={blogStyle}>
-          {this.state.blog.title}: {this.state.blog.author}
+          {this.state.blog.title} {this.state.blog.author}
           <div>
           <a href={this.state.blog.url}>{this.state.blog.url}</a>
           <div>Likes: {likes} 
             <button onClick={this.addLike}>Like</button>
           </div>
           <p>Added by {this.state.blog.user.name}</p>
-          <button onClick={this.deleteBlog}>delete</button>
+          <button style={deleteButtonVisible} onClick={this.deleteBlog}>delete</button>
           </div>
         </div>
       )

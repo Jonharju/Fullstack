@@ -71,7 +71,6 @@ class App extends React.Component {
   }
 
   likeBlog = async (blog) => {
-    console.log(blog)
     var updatedBlog = blog
     updatedBlog.likes = !blog.likes ? 1 : blog.likes +1
     const blogObject = {
@@ -90,7 +89,7 @@ class App extends React.Component {
 
   deleteBlog = async (blog) => {
     if (window.confirm("Halautko varmasti poistaa blogin?")) {
-      if (blog.user.username === this.state.user.username) {
+      if (blog.user.username === this.state.user.username || blog.user == null) {
         await blogService.remove(blog.id)
         this.setState({
           blogs: this.state.blogs.filter(b => b.id !== blog.id)
@@ -184,7 +183,7 @@ class App extends React.Component {
               <BlogForm onSubmit={this.addBlog} handleChange={this.handleBlogFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
             </Togglable>
             {this.state.blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-              <Blog key={blog.id} blog={blog} delete={this.deleteBlog} update={this.likeBlog}/>
+              <Blog key={blog.id} blog={blog} delete={this.deleteBlog} update={this.likeBlog} user= {this.state.user}/>
             )}
           </div>
         }
