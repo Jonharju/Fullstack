@@ -1,5 +1,5 @@
 import React from 'react'
-
+import PropTypes from 'prop-types'
 
 class Blog extends React.Component {
   constructor(props) {
@@ -58,5 +58,12 @@ const blogStyle = {
   border: 'solid',
   borderWidth: 1,
   marginBottom: 5 
+}
+
+Blog.propTypes = {
+  delete: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 }
 export default Blog
