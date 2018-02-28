@@ -138,7 +138,7 @@ class App extends React.Component {
 
   render() {
     const loginForm = () => (
-      <div>
+      <div className="login">
         <h2>Kirjaudu</h2>
     
         <form onSubmit={this.login}>
@@ -173,7 +173,7 @@ class App extends React.Component {
         </div>
         {this.state.user === null ?
           loginForm() :
-          <div>
+          <div className="blogs">
             <div>
               <p>{this.state.user.name} logged in 
                 <button onClick= {this.logout}>Logout</button>
