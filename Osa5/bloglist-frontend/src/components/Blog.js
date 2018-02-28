@@ -31,7 +31,7 @@ class Blog extends React.Component {
     if (this.state.visible) {
       const likes = !this.state.blog.likes ? 0 : this.state.blog.likes
       return (
-        <div onClick={this.handleClick} style={blogStyle}>
+        <div className="content" onClick={this.handleClick} style={blogStyle}>
           {this.state.blog.title} {this.state.blog.author}
           <div>
           <a href={this.state.blog.url}>{this.state.blog.url}</a>
@@ -45,7 +45,7 @@ class Blog extends React.Component {
       )
     } else {
       return (
-        <div onClick={this.handleClick} style={blogStyle}>
+        <div className="name" onClick={this.handleClick} style={blogStyle}>
           {this.state.blog.title}: {this.state.blog.author}
         </div>
       )
