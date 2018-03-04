@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
   console.log('action', action)
   switch(action.type) {
     case 'NEW':
-      return [...state, asObject(action.data)]
+      return [...state, asObject(action.data.content)]
     case 'VOTE':
       const id = action.data.id
       const toChange = state.find(n => n.id === id)
