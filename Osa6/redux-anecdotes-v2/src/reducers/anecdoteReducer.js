@@ -8,7 +8,7 @@ const anecdotesAtStart = []
 //  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 //]
 
-const getId = () => (100000*Math.random()).toFixed(0)
+//const getId = () => (100000*Math.random()).toFixed(0)
 
 //const asObject = (anecdote) => {
 //  return {
@@ -28,8 +28,7 @@ const anecdoteReducer = (store = anecdotesAtStart, action) => {
     return [...old, { ...voted, votes: voted.votes+1 } ]
   }
   if (action.type === 'CREATE') {
-
-    return [...store, { content: action.content, id: getId(), votes:0 }]
+    return [...store, action.data]
   } if(action.type === 'INIT') {
     return action.data
   }
@@ -43,10 +42,10 @@ export const initialization = (data) => {
     data
   }
 }
-export const anecdoteCreation = (content) => {
+export const anecdoteCreation = (data) => {
   return {
     type: 'CREATE',
-    content
+    data
   }
 }
 
