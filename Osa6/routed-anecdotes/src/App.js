@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -162,15 +162,29 @@ class App extends React.Component {
         padding: 10,
         marginBottom: 10
       }
+      const menuStyle = {
+        color: 'purple',
+        background: 'lightblue',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+      }
+      const activeMenuStyle = {
+        fontWeight: 'bold',
+        background: 'grey',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+      }
     return (
       <div>
         <Router>
           <div>
             <h1>Software anecdotes</h1>
-            <div>
-              <Link to="/">anecdotes</Link> &nbsp;
-              <Link to="/create">create new</Link> &nbsp;
-              <Link to="/about">about</Link>
+            <div style={menuStyle}>
+              <NavLink exact to="/" activeStyle={activeMenuStyle}>anecdotes</NavLink> &nbsp;
+              <NavLink exact to="/create" activeStyle={activeMenuStyle}>create new</NavLink> &nbsp;
+              <NavLink exact to="/about" activeStyle={activeMenuStyle}>about</NavLink>
             </div>
             {this.state.notification === '' ? '' : 
             <p style={notificationStyle}>{this.state.notification}</p>}
