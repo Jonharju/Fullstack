@@ -1,17 +1,18 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
 class AnecdoteList extends React.Component {
   handleVote = (anecdote) => {
-    this.props.store.dispatch(voteAnecdote(anecdote.id))
-    this.props.store.dispatch(setNotification('Voted for "'+anecdote.content+'"'))
+    this.props.voteAnecdote(anecdote.id)
+    this.props.setNotification('Voted for "'+anecdote.content+'"')
     setTimeout(() => {
-      this.props.store.dispatch(setNotification(''))
+      this.props.setNotification('')
     }, 5000)
   }
   render() {
-    var anecdotes = this.props.store.getState().anecdotes
-    const f = this.props.store.getState().filter
+    var anecdotes = this.props.anecdotes
+    const f = this.props.filter
     anecdotes = anecdotes.filter(anecdote => anecdote.content.includes(f))
     return (
       <div>
@@ -33,5 +34,21 @@ class AnecdoteList extends React.Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter
+  }
+}
 
-export default AnecdoteList
+const mapDispatchToProps = {
+  voteAnecdote,
+  setNotification
+}
+
+const ConnectedAnecdoteList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList)
+
+export default ConnectedAnecdoteList
