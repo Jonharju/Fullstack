@@ -15,7 +15,7 @@ class AnecdoteForm extends React.Component {
   render() {
     return (
       <div>
-        <h2>create new</h2>
+        <h2>Create new</h2>
         <form onSubmit={this.handleSubmit}>
           <div><input name='anecdote'/></div>
           <button>create</button>
