@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { setFilter } from '../reducers/filterReducer'
 class Filter extends React.Component {
   handleChange = (event) => {
     // input-kentän arvo muuttujassa event.target.value
-    this.props.store.dispatch(setFilter(event.target.value))
+    this.props.setFilter(event.target.value)
   }
   render() {
     const style = {
@@ -16,4 +17,17 @@ class Filter extends React.Component {
     )
   }
 }
-export default Filter
+const mapStateToProps = (state) => {
+  return {
+    filter: state.filter
+  }
+}
+const mapDispatchToProps = {
+  setFilter
+}
+const ConnectedFilter = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Filter)
+
+export default ConnectedFilter
