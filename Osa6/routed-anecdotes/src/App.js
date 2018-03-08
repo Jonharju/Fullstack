@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListGroup, ListGroupItem, Grid, Col, Thumbnail } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Grid, Col, Thumbnail, Nav, Navbar, NavItem, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 import image from './Babbage40.png'
 
@@ -15,7 +15,43 @@ const AnecdoteList = ({ anecdotes }) => (
       </ListGroup>  
   </div>
 )
-
+const menuStyle = {
+  color: 'purple',
+  background: 'lightblue',
+  borderRadius: 5,
+  padding: 10,
+  marginBottom: 10
+}
+const activeMenuStyle = {
+  fontWeight: 'bold',
+  background: 'white',
+  borderRadius: 5,
+  padding: 10,
+  marginBottom: 10
+}
+const Menu = () => (
+  <Navbar collapseOnSelect>
+    <Navbar.Header>
+      <Navbar.Brand>
+        Anecdote app
+      </Navbar.Brand>
+      <Navbar.Toggle />
+    </Navbar.Header>
+    <Navbar.Collapse>
+      <Nav>
+        <NavItem href="#">
+          <NavLink exact to="/" activeStyle={activeMenuStyle}>anecdotes</NavLink> &nbsp;
+        </NavItem>
+        <NavItem href="#">
+          <NavLink exact to="/create" activeStyle={activeMenuStyle}>create new</NavLink> &nbsp;
+        </NavItem>
+        <NavItem href="#">  
+          <NavLink exact to="/about" activeStyle={activeMenuStyle}>about</NavLink>
+        </NavItem>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
+)
 const Anecdote = ({anecdote}) => {
   return(
   <div>
@@ -44,7 +80,7 @@ const About = () => (
         <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
       </Col>
       <Col md={3}>
-        <Thumbnail src={image} responsive />
+        <Thumbnail src={image} responsive='true' />
       </Col>
     </Grid>
   </div>
@@ -89,19 +125,30 @@ class CreateNew extends React.Component {
       <div>
         <h2>create a new anecdote</h2>
         <form onSubmit={this.handleSubmit}>
-          <div>
-            content 
-            <input name='content' value={this.state.content} onChange={this.handleChange} />
-          </div>
-          <div>
-            author
-            <input name='author' value={this.state.author} onChange={this.handleChange} />
-          </div>
-          <div>
-            url for more info
-            <input name='info' value={this.state.info} onChange={this.handleChange} />
-          </div> 
-          <button>create</button>
+          <FormGroup>
+            <ControlLabel>content:</ControlLabel>
+            <FormControl
+            type="text"
+            name="content"
+            value={this.state.content}
+            onChange={this.handleChange}
+            />
+            <ControlLabel>author:</ControlLabel>
+            <FormControl
+              type="text"
+              name="author"
+              value={this.state.author}
+              onChange={this.handleChange}
+            />
+            <ControlLabel>info:</ControlLabel>
+            <FormControl
+              type="text"
+              name="info"
+              value={this.state.info}
+              onChange={this.handleChange}
+            />
+            <Button bsStyle="success" type="submit">create</Button>
+          </FormGroup>
         </form>
       </div>  
     )
@@ -171,31 +218,13 @@ class App extends React.Component {
         borderColor: 'green',
         padding: 10,
         marginBottom: 10
-      }
-      const menuStyle = {
-        color: 'purple',
-        background: 'lightblue',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10
-      }
-      const activeMenuStyle = {
-        fontWeight: 'bold',
-        background: 'white',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10
-      }
+      }      
     return (
       <div className="container">
         <Router>
           <div>
             <h1>Software anecdotes</h1>
-            <div style={menuStyle}>
-              <NavLink exact to="/" activeStyle={activeMenuStyle}>anecdotes</NavLink> &nbsp;
-              <NavLink exact to="/create" activeStyle={activeMenuStyle}>create new</NavLink> &nbsp;
-              <NavLink exact to="/about" activeStyle={activeMenuStyle}>about</NavLink>
-            </div>
+            <Menu />
             {this.state.notification === '' ? '' : 
             <p style={notificationStyle}>{this.state.notification}</p>}
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
