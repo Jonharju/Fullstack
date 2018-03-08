@@ -1,15 +1,17 @@
 import React from 'react'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => 
-        <li key={anecdote.id} >
-        <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>)}
-    </ul>  
+    <ListGroup>
+        {anecdotes.map(anecdote => (
+          <ListGroupItem key={anecdote.id}>
+              <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+          </ListGroupItem>
+        ))}
+      </ListGroup>  
   </div>
 )
 
@@ -171,13 +173,13 @@ class App extends React.Component {
       }
       const activeMenuStyle = {
         fontWeight: 'bold',
-        background: 'grey',
+        background: 'white',
         borderRadius: 5,
         padding: 10,
         marginBottom: 10
       }
     return (
-      <div>
+      <div className="container">
         <Router>
           <div>
             <h1>Software anecdotes</h1>
